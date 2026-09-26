@@ -6,4 +6,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "apk-blueprint"
+rootProject.name = "blueprint"

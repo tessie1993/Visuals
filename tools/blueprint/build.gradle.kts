@@ -10,7 +10,7 @@ kotlin {
 
 application {
     mainClass.set("dev.visuals.blueprint.MainKt")
-    applicationName = "apk-blueprint"
+    applicationName = "blueprint"
 }
 
 dependencies {
