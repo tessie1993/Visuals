@@ -3,3 +3,9 @@
 # they are cleaned up automatically and must never be committed.
 .claude/worktrees/
 __pycache__/
+
+# Gradle / Kotlin build output
+.gradle/
+.kotlin/
+build/
+local.properties
