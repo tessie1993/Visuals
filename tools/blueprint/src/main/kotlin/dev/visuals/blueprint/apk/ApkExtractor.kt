@@ -1,6 +1,7 @@
 package dev.visuals.blueprint.apk
 
 import dev.visuals.blueprint.model.Blueprint
+import dev.visuals.blueprint.sha256
 import dev.visuals.blueprint.model.Source
 import jadx.api.JadxArgs
 import jadx.api.JadxDecompiler
@@ -10,7 +11,6 @@ import jadx.api.ResourceType
 import jadx.api.impl.NoOpCodeCache
 import jadx.api.impl.SimpleCodeWriter
 import java.io.File
-import java.security.MessageDigest
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -59,7 +59,7 @@ class ApkExtractor(private val log: (String) -> Unit = {}) {
                 obfuscated = isObfuscated(appClasses),
             )
             log("Assembling blueprint")
-            return BlueprintAssembler(facts).assemble(Source(apk.name, sha256(apk)))
+            return BlueprintAssembler(facts).assemble(Source(apk.name, apk.sha256()))
         }
     }
 
@@ -106,19 +106,6 @@ class ApkExtractor(private val log: (String) -> Unit = {}) {
 
     private fun isObfuscated(classes: List<JavaClass>): Boolean =
         classes.isNotEmpty() && classes.count { it.name.length <= 2 } > classes.size * OBFUSCATED_SHARE
-
-    private fun sha256(file: File): String {
-        val digest = MessageDigest.getInstance("SHA-256")
-        file.inputStream().use { input ->
-            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-            while (true) {
-                val read = input.read(buffer)
-                if (read < 0) break
-                digest.update(buffer, 0, read)
-            }
-        }
-        return digest.digest().joinToString("") { "%02x".format(it) }
-    }
 
     private companion object {
         const val NAV_KEY = "androidx.navigation3.runtime.NavKey"

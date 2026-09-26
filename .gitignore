@@ -9,3 +9,7 @@ __pycache__/
 .kotlin/
 build/
 local.properties
+
+# Node build output
+node_modules/
+dist/
